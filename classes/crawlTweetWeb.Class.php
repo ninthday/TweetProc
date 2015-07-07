@@ -6,11 +6,11 @@
  * 由 Twitter 網頁爬回公開的資料內容
  *
  * @author ninthday <jeffy@ninthday.info>
- * @version 1.0
+ * @version 1.1
  * @copyright (c) 2015, Jeffy Shih
  */
 
-namespace Floodfire\TwitterProcess;
+namespace ninthday\floodfire\TwitterProcess;
 
 class crawlTweetWeb
 {
@@ -124,6 +124,47 @@ class crawlTweetWeb
         $this->user_name = '';
         $this->url = 'https://twitter.com/';
         $this->tweet = array();
+    }
+
+    /**
+     * 移除推文中有 Emoji 圖示的內容
+     * Emoji 會影響資料存入資料庫，
+     * 
+     * @param string $text
+     * @return string 
+     */
+    public function removeEmoji($text)
+    {
+
+        $clean_text = "";
+
+        // Match Emoticons
+        $regexEmoticons = '/[\x{1F600}-\x{1F64F}]/u';
+        $clean_text = preg_replace($regexEmoticons, '', $text);
+
+        // Match Miscellaneous Symbols and Pictographs
+        $regexSymbols = '/[\x{1F300}-\x{1F5FF}]/u';
+        $clean_text = preg_replace($regexSymbols, '', $clean_text);
+
+        // Match Transport And Map Symbols
+        $regexTransport = '/[\x{1F680}-\x{1F6FF}]/u';
+        $clean_text = preg_replace($regexTransport, '', $clean_text);
+
+        // Match Miscellaneous Symbols
+        $regexMisc = '/[\x{2600}-\x{26FF}]/u';
+        $clean_text = preg_replace($regexMisc, '', $clean_text);
+
+        // Match Dingbats
+        $regexDingbats = '/[\x{2700}-\x{27BF}]/u';
+        $clean_text = preg_replace($regexDingbats, '', $clean_text);
+
+        // Match flags (iOS)
+        $regexTransport = '/[\x{1F1E0}-\x{1F1FF}]/u';
+        $clean_text = preg_replace($regexTransport, '', $clean_text);
+
+        $clean_text = preg_replace('/&#x(e[0-9a-f][0-9a-f][0-9a-f]|f[0-8][0-9a-f][0-9a-f])/i', '', $clean_text);
+
+        return $clean_text;
     }
 
     public function __destruct()

@@ -8,6 +8,6 @@
 
 require './inc/setup.inc.php';
 require_once './classes/crawlTweetWeb.Class.php';
-$obj_crawler = new \Floodfire\TwitterProcess\crawlTweetWeb('HKmoviefan', '448322339596296192');
+$obj_crawler = new \ninthday\floodfire\TwitterProcess\crawlTweetWeb('HKmoviefan', '448322339596296192');
 $tweet = $obj_crawler->getData();
 print_r($tweet);
