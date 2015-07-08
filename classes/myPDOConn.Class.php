@@ -3,12 +3,12 @@
  * Description of myPDOConn
  * Singleton 設計的 PDO 連結資料庫程式
  *
- * @author ninthday <jeffy@ninthday.info>
+ * @author ninthday <bee.me@ninthday.info>
  * @version 1.0
  * @copyright (c) 2014, Jeffy Shih
  */
 
-namespace Floodfire;
+namespace ninthday;
 class myPDOConn {
 
     protected static $instance = NULL;
