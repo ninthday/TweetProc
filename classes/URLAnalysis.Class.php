@@ -53,15 +53,35 @@ class URLAnalysis
         return $rtn;
     }
 
-    public function getTopNCountByDay()
+    public function getTopNCountByDay($top_n, $tablename, $startdate, $long)
     {
-        
+        $rtn = array();
+        $ary_topn = $this->getTopNDomain($top_n, $tablename);
+        foreach ($ary_topn as $row) {
+            $domain = $row[0];
+            
+        }
+        return $rtn;
     }
 
     private function getTopNDomain($top_n, $tablename)
     {
         $rtn = array();
-        $sql = '';
+        $sql = 'SELECT `domain`, COUNT(*) AS `CNT` FROM `' . $tablename . '` '
+                . 'WHERE `domain` != \'\' GROUP BY `domain` '
+                . 'ORDER BY `CNT` DESC LIMIT 0, :topn';
+        try {
+            $stmt = $this->dbh->prepare();
+            $stmt->bindParam(':topn', $top_n, \PDO::PARAM_INT);
+            $stmt->execute();
+            $rs = $stmt->fetchAll(\PDO::FETCH_NUM);
+            foreach ($rs as $row) {
+                array_push($rtn, $row[0]);
+            }
+        } catch (\PDOException $exc) {
+            echo $exc->getTraceAsString();
+        }
+        
         return $rtn;
     }
 
